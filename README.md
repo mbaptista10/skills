@@ -6,13 +6,19 @@ Skills para [Claude Code](https://docs.anthropic.com/en/docs/claude-code) que es
 
 | Skill | Descrição | Instalar |
 |-------|-----------|----------|
-| **semantic-commits** | Analisa arquivos staged, agrupa semanticamente por relação lógica e cria commits convencionais separados para cada grupo. | `npx @anthropic-ai/claude-code-skills install mbaptista10/skills/semantic-commits` |
-| **semantic-pr** | Cria ou edita Pull Requests analisando commits da branch, coletando contexto e gerando PRs estruturadas com prefixo conventional commit no título. | `npx @anthropic-ai/claude-code-skills install mbaptista10/skills/semantic-pr` |
+| **semantic-commits** | Analisa arquivos staged, agrupa semanticamente por relação lógica e cria commits convencionais separados para cada grupo. | `npx skills add mbaptista10/skills --skill semantic-commits` |
+| **semantic-pr** | Cria ou edita Pull Requests analisando commits da branch, coletando contexto e gerando PRs estruturadas com prefixo conventional commit no título. | `npx skills add mbaptista10/skills --skill semantic-pr` |
 
 ## Instalacao
 
+Instalar todas as skills:
 ```bash
-npx @anthropic-ai/claude-code-skills install mbaptista10/skills/<skill-name>
+npx skills add mbaptista10/skills
+```
+
+Instalar uma skill especifica:
+```bash
+npx skills add mbaptista10/skills --skill <skill-name>
 ```
 
 ## Uso
