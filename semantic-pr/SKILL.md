@@ -11,12 +11,23 @@ You are a semantic PR generator. Your job is to create or edit a Pull Request by
 
 **Follow these steps strictly:**
 
-#### Step 1 - Identify current branch and target
+#### Step 1 - Identify current branch, target, and template
 
 1. Run `git branch --show-current` to identify the current branch.
-2. Ask the user for the **target branch** (e.g., main, develop, staging) if not already provided.
-3. Ask the user for a **brief explanation** of the task/feature being delivered.
-4. Ask the user for the **Jira task link**. If they don't have one, skip the field entirely (do NOT leave a placeholder).
+2. Check if the project has a PR template by looking for files in the following paths (in order of priority):
+   - `.github/pull_request_template.md`
+   - `.github/PULL_REQUEST_TEMPLATE.md`
+   - `pull_request_template.md`
+   - `PULL_REQUEST_TEMPLATE.md`
+   - `.github/PULL_REQUEST_TEMPLATE/*.md` (if this directory exists and contains templates, list the available files)
+3. If a PR template is found:
+   - Read the template file content.
+   - Ask the user: **"O projeto possui um template de PR (`<path>`). Deseja usar o template do projeto ou o template padrão da skill?"**
+   - If multiple templates exist (from the `PULL_REQUEST_TEMPLATE/` directory), list them and ask the user to choose one.
+   - Store the user's choice for use in Step 4.
+4. Ask the user for the **target branch** (e.g., main, develop, staging) if not already provided.
+5. Ask the user for a **brief explanation** of the task/feature being delivered.
+6. Ask the user for the **Jira task link**. If they don't have one, skip the field entirely (do NOT leave a placeholder).
 
 #### Step 2 - Check for existing PR
 
@@ -54,7 +65,22 @@ Based on the commits and the user's explanation, determine the conventional comm
 - Use imperative mood (ex: "adicionar", "corrigir", "refatorar")
 - **Title MUST NOT exceed 69 characters** (including prefix and scope). GitHub truncates titles beyond this limit.
 
-**PR Body** must follow this exact template:
+**PR Body — Template selection:**
+
+**A) If the user chose to use the project's PR template:**
+
+1. Use the project template's structure (sections, headers, checkboxes, etc.) as the body skeleton.
+2. Fill in each section intelligently using the collected context (commits, user explanation, Jira link, diff stats).
+3. For sections that expect free text (e.g., "Description", "Summary", "What changed"), synthesize the user's explanation with the commit analysis.
+4. For sections that list changes, map commits to list items as you would in the default template.
+5. For checkbox sections (e.g., "Checklist"), leave them as-is for the user to check manually.
+6. For sections that reference a Jira/ticket link, fill it in if provided; otherwise leave the section empty or omit the placeholder.
+7. If the template has sections that don't map to any collected information, leave them with a brief `<!-- preencher manualmente -->` comment.
+8. The conventional commit title rules still apply regardless of which template is used for the body.
+
+**B) If the user chose the skill's default template (or no project template was found):**
+
+Use this exact template:
 
 ```markdown
 ## 📝 Descrição
@@ -73,7 +99,7 @@ Based on the commits and the user's explanation, determine the conventional comm
 - Descrição da mudança do commit 3
 ```
 
-Rules for building the body:
+Rules for the default template:
 - The **Descrição** section should synthesize the user's explanation with what the commits reveal, forming a cohesive paragraph.
 - The **Relacionados** section must ONLY appear if the user provided a Jira link. If no link was provided, omit the entire section including the header.
 - The **Mudanças Realizadas** section must have one item per commit as a simple list (`- item`). Rewrite commit messages to be clear and descriptive in PT-BR. Do not just copy raw commit messages — make them human-readable.
