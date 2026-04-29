@@ -61,6 +61,7 @@ Ask: "Approve these groups? You can request changes (merge, split, move files, r
 - `type`: `feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert`
 - `scope`: optional, module/area affected
 - `description`: imperative mood ("add", not "added")
+- **Max 69 characters** (GitHub truncation limit). If exceeded: shorten the description first, then drop the scope if still too long.
 
 **Body (required):** bullet list starting with `- `, at least one bullet.
 
