@@ -2,6 +2,8 @@
 
 Skills para [Claude Code](https://docs.anthropic.com/en/docs/claude-code) que estendem as capacidades do agente com workflows especializados.
 
+[![skills.sh](https://skills.sh/b/mbaptista10/skills)](https://skills.sh/mbaptista10/skills)
+
 ## Skills disponíveis
 
 | Skill | Descrição | Instalar |
