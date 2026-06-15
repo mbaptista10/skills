@@ -3,6 +3,10 @@ name: semantic-commits
 description: "Analyzes staged files, groups them semantically by logical relationship, and creates separate conventional commits for each group. Ideal when you have many staged files that should be split into multiple meaningful commits."
 ---
 
+### Force mode
+
+If the user passes `--force`, skip the confirmation in Step 3: analyze and group the files, then execute the commits directly (Step 4).
+
 ### Workflow
 
 #### Step 1 - Gather context
@@ -42,6 +46,8 @@ Files:
   - path/to/file1
   - path/to/file2
 ```
+
+Skip this step if `--force` was passed — proceed directly to Step 4.
 
 Ask: "Approve these groups? You can request changes (merge, split, move files, rename) or confirm to proceed."
 
