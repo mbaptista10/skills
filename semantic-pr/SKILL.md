@@ -3,6 +3,13 @@ name: semantic-pr
 description: "Creates or edits a Pull Request from the current branch to a target branch. Analyzes commits, asks for context, and generates a well-structured PR with conventional commit prefix in the title. Use when the user asks to create a PR, open a PR, or edit an existing PR."
 ---
 
+### Force mode
+
+If the user passes `--force`, skip all questions and the final confirmation:
+- Step 1: do not ask anything. Target branch = repository main branch (`main` or `master`, whichever exists). No Jira link. Use the project PR template if one exists, otherwise the default template.
+- Step 4: build the description from the commit analysis only.
+- Step 5: skip entirely and go straight to Step 6.
+
 ### Workflow
 
 #### Step 1 - Identify branch, target, and template
@@ -57,6 +64,8 @@ Rules:
 - **Mudanças Realizadas**: one item per commit, rewritten as human-readable PT-BR (not raw commit messages).
 
 #### Step 5 - Confirm
+
+Skip this step if `--force` was passed.
 
 Present the full PR (title + body) and wait for explicit confirmation. **Do NOT proceed otherwise.**
 
