@@ -42,10 +42,13 @@ Format:
 ### Group 1: <short description>
 Type: <feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert>
 Scope: <optional>
+Header: `type(scope): description` (NN chars — must be ≤ 69)
 Files:
   - path/to/file1
   - path/to/file2
 ```
+
+Show the character count of each header. If any exceeds 69, fix it before presenting.
 
 Skip this step if `--force` was passed — proceed directly to Step 4.
 
@@ -58,6 +61,7 @@ Ask: "Approve these groups? You can request changes (merge, split, move files, r
 1. Unstage everything once: `git reset HEAD -- .`
 2. For each group, in order:
    - `git add <files>`
+   - **Validate the header before committing**: count the characters of `type(scope): description`. It MUST be ≤ 69. If it exceeds, shorten the description first, then drop the scope if still too long. Never commit a header > 69 chars.
    - `git commit -m "type(scope): description" -m "- Change one\n- Change two"`
 3. After all commits, run `git log --oneline -<n>` to show the result.
 
@@ -67,7 +71,7 @@ Ask: "Approve these groups? You can request changes (merge, split, move files, r
 - `type`: `feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert`
 - `scope`: optional, module/area affected
 - `description`: imperative mood ("add", not "added")
-- **Max 69 characters** (GitHub truncation limit). If exceeded: shorten the description first, then drop the scope if still too long.
+- ⚠️ **HARD LIMIT: the entire header (`type(scope): description`) MUST NOT exceed 69 characters** (GitHub truncation limit). This is non-negotiable — count the characters before every commit. If exceeded: shorten the description first, then drop the scope if still too long.
 
 **Body (required):** bullet list starting with `- `, at least one bullet.
 
