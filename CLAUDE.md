@@ -14,6 +14,7 @@ Each skill lives in its own directory with a single `SKILL.md` file that defines
 
 - **semantic-commits** (`/semantic-commits`): Analyzes staged files, groups them semantically, and creates separate conventional commits per group. Requires user confirmation before committing.
 - **semantic-pr** (`/semantic-pr`): Creates/edits PRs by analyzing branch commits, collecting context from the user, and generating structured PRs with conventional commit prefix titles. Default language is PT-BR.
+- **ship** (`/ship`): End-to-end delivery flow — derives and creates a new branch from staged files, runs `/semantic-commits --force`, syncs with the origin default branch (rebase with merge fallback), pushes, then runs `/semantic-pr --force`. Operates only on already-staged files.
 
 ## Conventions
 
