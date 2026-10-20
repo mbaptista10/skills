@@ -5,32 +5,52 @@
 feat(auth): adicionar fluxo de refresh token
 ```
 
-**Body (with Jira link):**
+**Body (with Jira link and impact):**
 ```markdown
-## 📝 Descrição
+## Contexto
 
-Implementação do fluxo de refresh token para o módulo de autenticação. O endpoint permite que tokens expirados sejam renovados sem necessidade de novo login, melhorando a experiência do usuário em sessões longas.
+Tokens de acesso expiram em 15 minutos e o cliente precisa refazer login para continuar a sessão.
 
-## 🔗 Relacionados
+## Solução
 
-- **Task:** https://company.atlassian.net/browse/AUTH-123
+Novo endpoint de refresh com rotação de tokens: cada refresh token é de uso único e invalida o anterior. A validação foi centralizada no middleware de autenticação.
 
-## 💡 Mudanças Realizadas
+## Alterações
 
-- Adicionar endpoint de refresh token no controller de autenticação
-- Implementar lógica de rotação de tokens no service de auth
-- Adicionar testes unitários para o fluxo de refresh
-- Atualizar middleware de validação de tokens
+- Endpoint `POST /auth/refresh` no controller de autenticação
+- Rotação e revogação de refresh tokens no service de auth
+- Middleware de validação aceita o novo formato de token
+
+## Como validar
+
+- `npm test -- auth/refresh`
+- Login, aguardar expiração do access token e chamar `/auth/refresh`: deve retornar novo par de tokens
+- Reutilizar o refresh token anterior: deve retornar 401
+
+## Impacto
+
+Requer a env `REFRESH_TOKEN_TTL` em todos os ambientes antes do deploy.
+
+Refs: https://company.atlassian.net/browse/AUTH-123
 ```
 
-**Body (without Jira link):**
+**Body (without Jira link and impact):**
 ```markdown
-## 📝 Descrição
+## Contexto
 
-Correção do cálculo de paginação que retornava resultados duplicados quando o offset era maior que o total de registros. O problema afetava todos os endpoints de listagem da API.
+Endpoints de listagem retornavam registros duplicados quando o offset ultrapassava o total de registros.
 
-## 💡 Mudanças Realizadas
+## Solução
 
-- Corrigir erro de off-by-one no utilitário de paginação
-- Atualizar testes de integração dos endpoints de listagem
+Correção do cálculo de limite no utilitário de paginação, compartilhado por todos os endpoints de listagem.
+
+## Alterações
+
+- Correção de off-by-one no utilitário de paginação
+- Testes de integração cobrindo offset maior que o total
+
+## Como validar
+
+- `npm test -- pagination`
+- `GET /items?offset=<total+1>` deve retornar lista vazia
 ```

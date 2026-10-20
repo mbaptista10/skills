@@ -45,23 +45,37 @@ If no commits ahead of the target, inform the user and stop.
 **B) Default template (or no project template):**
 
 ```markdown
-## 📝 Descrição
+## Contexto
 
-<Parágrafo sintetizando a explicação do usuário e a análise dos commits.>
+<Problema ou motivação. Por que a mudança é necessária.>
 
-## 🔗 Relacionados
+## Solução
 
-- **Task:** <link do Jira>
+<Abordagem adotada e decisões técnicas relevantes, incluindo trade-offs.>
 
-## 💡 Mudanças Realizadas
+## Alterações
 
-- <um item por commit, reescrito de forma clara em PT-BR>
+- <uma linha por mudança lógica>
+
+## Como validar
+
+- <passos, comandos ou cenários para verificar a mudança>
+
+## Impacto
+
+<Breaking changes, migrations, novas envs, ordem de deploy, rollback.>
+
+Refs: <link do Jira>
 ```
 
 Rules:
-- **Descrição**: synthesize user explanation + commit analysis into a cohesive paragraph.
-- **Relacionados**: omit the entire section (including header) if no Jira link was provided.
-- **Mudanças Realizadas**: one item per commit, rewritten as human-readable PT-BR (not raw commit messages).
+- Tone: objective, factual sentences. No emojis, no adjectives, no marketing language.
+- **Contexto**: the problem or motivation, from the user explanation. Do not describe the code here.
+- **Solução**: the approach and key decisions, from the commit analysis and diff.
+- **Alterações**: group commits by logical change (one item per change, not per commit); fixup/adjustment commits merge into the change they belong to. Human-readable PT-BR, never raw commit messages.
+- **Como validar**: derive from the diff (tests added, endpoints, commands, scenarios). If it cannot be inferred, ask the user (in `--force` mode, list the tests covering the change).
+- **Impacto**: omit the entire section (including header) if there is nothing relevant.
+- **Refs**: omit the line if no Jira link was provided.
 
 #### Step 5 - Confirm
 
